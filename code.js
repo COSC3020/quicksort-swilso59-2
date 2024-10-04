@@ -51,10 +51,9 @@ function partition (array, low, high) {
     // Loop through the elements in the range [low + 1, high]
     for (let i = low + 1; i <= high; i++) {
         
-        // This line was giving me trouble unless I set it us in the exact manner
         // If the current element is smaller than the pivot. Swap the current element with the pivot
         if (array[i] < array[low]) {
-            
+            // This line was giving me trouble unless I set it us in the exact manner
             // Originally had pivot++, swap(array, pivot, i)
             swap(array, ++pivot, i); 
         }
