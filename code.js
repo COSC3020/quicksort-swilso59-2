@@ -1,67 +1,46 @@
-function quicksort(array) {
+function quicksort(x) {
+    // Stack to store the range of indices to be sorted (lo, hi)
+    let stack = [];
+    
+    // Push the initial full array range to the stack
+    stack.push({ lo: 0, hi: x.length - 1 });
 
-    //First we want to check if the array is empty or only has one element. If so, we return it 
-    if(array.length <= 1) {
-        return array;
-    }
-
-    // Initialize a stack with the starting and ending indices to replace recursion.
-    let stack = [0, array.length - 1];
-
-    // Process the stack
+    // Continue until the stack is empty
     while (stack.length > 0) {
+        // Pop the last range (subarray) from the stack
+        let { lo, hi } = stack.pop();
 
-        // Pop the high and low indices for the current subarray
-        let high = stack.pop();
-        let low = stack.pop();
+        // Base case: skip if the subarray has one or zero elements
+        if (lo >= hi) continue;
 
-        // Partition the array based on the pivot 
-        let pivot = partition(array, low, high);
+        // Set the pivot index to the low boundary of the subarray
+        let p = lo;
 
-        // Check if there are elements on the left of the pivot. Push the low and pivot - 1 indices
-        if (pivot - 1 > low) {
-            stack.push(low);
-            stack.push(pivot - 1);
+        // Partitioning: move elements smaller than the pivot to the left
+        for (let i = lo + 1; i <= hi; i++) {
+            if (x[i] < x[lo]) {
+                p++;
+                swap(x, p, i);
+            }
         }
 
-        // Check if there are elements on the right of the pivot. Push the pivot + 1 and high indices
-        if (pivot + 1 < high) {
-            stack.push(pivot + 1);
-            stack.push(high); 
-        }
+        // Swap the pivot element to its correct position
+        swap(x, lo, p);
+
+        // Push the left subarray (elements less than the pivot) onto the stack
+        if (p - 1 > lo) stack.push({ lo: lo, hi: p - 1 });
+
+        // Push the right subarray (elements greater than the pivot) onto the stack
+        if (p + 1 < hi) stack.push({ lo: p + 1, hi: hi });
     }
-    
+
     // Return the sorted array
-    return array;
+    return x;
 }
 
-// Swap function to swap elements in the array 
-function swap(array, first, second) {
-    let tmp = array[first];
-    array[first] = array[second];
-    array[second] = tmp;
-    return array;
+// Helper function to swap two elements in the array
+function swap(arr, i, j) {
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
-
-// Partition function to rearrange elements around the pivot 
-function partition (array, low, high) {
-    
-    let pivot = low;
-    
-    // Loop through the elements in the range [low + 1, high]
-    for (let i = low + 1; i <= high; i++) {
-        
-        // If the current element is smaller than the pivot. Swap the current element with the pivot
-        if (array[i] < array[low]) {
-            // This line was giving me trouble unless I set it us in the exact manner
-            // Originally had pivot++, swap(array, pivot, i)
-            swap(array, ++pivot, i); 
-        }
-    }
-
-    // After scanning the netire sub array, place pivot in its correct position 
-    swap(array, low, pivot);
-
-    return pivot;
-}
-
