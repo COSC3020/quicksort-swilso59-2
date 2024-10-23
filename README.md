@@ -19,7 +19,7 @@ markdown file.
 The time complexity of our implementation in the worst case is $\Theta(n^{2})$
 
 First, when we look at the partitioning step. We can see that we iterate through the subarray to place elements in their
-correct positions relative to the pivot. For a subarray of size $n$ the processes takes $O(n)$ time because it involves a single 
+correct positions relative to the pivot. For a subarray of size $n$ the processes takes $n$ time because it involves a single 
 pass through the array. 
 
 In the worst case when we have an already sorted or reverse sorted array. The partitioning needs to go through progressively smaller and smaller subarrays. This gives us $n$ partitioning steps, each taking $n$ time giving us the worst case time complexity of $\Theta(n^{2})$
